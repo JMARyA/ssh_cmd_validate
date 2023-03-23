@@ -107,23 +107,11 @@ fn main() {
         .trim()
         .to_string();
 
-    if config
+    if let Some(command_option) = config
         .allowed_commands
         .iter()
-        .map(|x| {
-            if x.executable == cmd_full_path {
-                return true;
-            }
-            false
-        })
-        .any(|x| x)
+        .find(|x| x.executable == cmd_full_path)
     {
-        let command_option = config
-            .allowed_commands
-            .iter()
-            .find(|x| x.executable == cmd_full_path)
-            .unwrap();
-
         let exec_cmd = match &command_option.force_arguments {
             Some(forced_args) => format!("{} {}", cmd_full_path, forced_args.join(" ")),
             None => format!("{} {}", cmd_full_path, args.join(" ")),
