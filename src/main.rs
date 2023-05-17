@@ -72,8 +72,14 @@ fn main() {
                 if log_enabled {
                     writeln!(
                         &mut log_file.as_mut().unwrap(),
-                        "{} - Executed command: {}",
+                        "{} - User \"{}\" [{}] Executed command: {}",
                         Local::now(),
+                        std::env::var("USER").unwrap_or(String::new()),
+                        std::env::var("SSH_CLIENT")
+                            .unwrap()
+                            .split(' ')
+                            .next()
+                            .unwrap(),
                         default_cmd
                     )
                     .expect("error writing to log file");
@@ -86,8 +92,14 @@ fn main() {
     if log_enabled {
         writeln!(
             &mut log_file.as_mut().unwrap(),
-            "{} - Attempted command: {}",
+            "{} - User \"{}\" [{}] Attempted command: {}",
             Local::now(),
+            std::env::var("USER").unwrap_or(String::new()),
+            std::env::var("SSH_CLIENT")
+                .unwrap()
+                .split(' ')
+                .next()
+                .unwrap(),
             ssh_original_command
         )
         .expect("error writing to log file");
@@ -122,8 +134,14 @@ fn main() {
         if log_enabled {
             writeln!(
                 &mut log_file.as_mut().unwrap(),
-                "{} - Executed command: {}",
+                "{} - User \"{}\" [{}] Executed command: {}",
                 Local::now(),
+                std::env::var("USER").unwrap_or(String::new()),
+                std::env::var("SSH_CLIENT")
+                    .unwrap()
+                    .split(' ')
+                    .next()
+                    .unwrap(),
                 exec_cmd
             )
             .expect("error writing to log file");
@@ -132,8 +150,14 @@ fn main() {
         if log_enabled {
             writeln!(
                 &mut log_file.unwrap(),
-                "{} - Denied attempt: {}",
+                "{} - User \"{}\" [{}] Denied attempt: {}",
                 Local::now(),
+                std::env::var("USER").unwrap_or(String::new()),
+                std::env::var("SSH_CLIENT")
+                    .unwrap()
+                    .split(' ')
+                    .next()
+                    .unwrap(),
                 ssh_original_command
             )
             .expect("error writing to log file");
